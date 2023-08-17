@@ -1,18 +1,22 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
+
+	"ForkMatch/internal/routes"
 )
 
 func main() {
 	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
+
+	pingRoute := routes.NewPingHandler(zap.Must(zap.NewProduction()))
+	r.GET(pingRoute.Pattern(), func(c *gin.Context) {
+		pingRoute.ServeHTTP(c.Writer, c.Request)
 	})
 
-	r.Run(":80") // listen and serve on 0.0.0.0:80
+	err := r.Run(":80") // listen and serve on 0.0.0.0:80
+	if err != nil {
+		panic(err)
+	}
 }
