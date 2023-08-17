@@ -29,7 +29,7 @@ docker/build: ## Build the docker image
 .PHONY: docker/run
 docker/run: docker/build ## Run the docker image
 	@echo "Running docker image..."
-	@docker run -it --rm -p 8080:8080 fork-match
+	@docker run -it --rm -p 80:80 fork-match
 
 .PHONY: help
 help: ## Display this help screen

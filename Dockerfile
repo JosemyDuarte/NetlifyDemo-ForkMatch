@@ -33,7 +33,7 @@ COPY --from=build-env /src/dist/${APP} /app
 
 USER nonroot:nonroot
 
-EXPOSE 8080
+EXPOSE 80
 
 ENTRYPOINT ["/app"]
 CMD []
