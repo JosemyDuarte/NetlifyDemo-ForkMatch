@@ -5,6 +5,11 @@ FROM golang:${GO_VERSION} AS build-env
 ENV APP "ForkMatch"
 
 WORKDIR /src
+
+COPY go.mod go.sum ./
+
+RUN go mod download
+
 COPY . .
 
 # Compilation options:
