@@ -1,0 +1,69 @@
+# macOS system files
+.DS_Store
+
+# JetBrains IDE specific files
+.idea/
+
+# Go binary and build files
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go executables
+*.out
+
+# Go test and benchmarking files
+*.test
+*.prof
+
+# Go coverage files
+*.cover
+
+# Go module files
+go.sum
+
+# Compiled Go source code
+*.o
+
+# Go documentation files
+doc/
+
+# Go generated files
+*_gen.go
+
+# Temporary Go files
+*.tmp
+
+# Ignore any log files
+*.log
+
+# Ignore any editor backup files
+*~
+
+# Ignore any compiled binary files
+*.bin
+
+# Ignore any package files
+*.pkg
+
+# Ignore any archives
+*.zip
+*.tar
+*.gz
+
+# Ignore any compiled C code
+*.cgo1.go
+*.cgo2.c
+_cgo_defun.c
+_cgo_gotypes.go
+
+# Ignore any generated files from Swig
+*_wrap.c
+
+# Ignore any generated files from yacc
+y.output
+y.tab.c
+y.tab.h
