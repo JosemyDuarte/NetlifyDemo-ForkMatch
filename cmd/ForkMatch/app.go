@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"time"
 
@@ -52,6 +53,12 @@ func (app *AWSApp) Run() error {
 	logger.Info("Starting ForkMatch")
 
 	pingRoute := routes.NewPingHandler(logger)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		_, err := io.WriteString(w, "Hello, world!")
+		if err != nil {
+			logger.Error("Failed to write response", zap.Error(err))
+		}
+	})
 	http.HandleFunc(pingRoute.Pattern(), pingRoute.ServeHTTP)
 
 	lambda.Start(httpadapter.New(http.DefaultServeMux).ProxyWithContext)
