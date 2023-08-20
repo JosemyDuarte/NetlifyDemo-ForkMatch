@@ -52,7 +52,7 @@ func (app *AWSApp) Run() error {
 	logger.Info("Starting ForkMatch")
 
 	pingRoute := routes.NewPingHandler(logger)
-	http.Handle(pingRoute.Pattern(), pingRoute)
+	http.HandleFunc(pingRoute.Pattern(), pingRoute.ServeHTTP)
 
 	lambda.Start(httpadapter.New(http.DefaultServeMux).ProxyWithContext)
 
