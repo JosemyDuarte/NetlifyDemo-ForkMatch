@@ -34,7 +34,7 @@ test: ## Run unit tests
 .PHONY: docker/build
 docker/build: ## Build the docker image
 	@echo "Building docker from git hash $(GIT_HASH)..."
-	@docker build -t fork-match --build-arg GO_VERSION=$(GO_VERSION) .
+	@docker build -t fork-match --build-arg GO_VERSION=$(GO_VERSION) --build-arg APP=$(APP) .
 
 .PHONY: docker/run
 docker/run: docker/build ## Run the docker image
