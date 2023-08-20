@@ -3,6 +3,9 @@ module ForkMatch
 go 1.21
 
 require (
+	github.com/aws/aws-lambda-go v1.19.1
+	github.com/awslabs/aws-lambda-go-api-proxy v0.14.0
+	github.com/caarlos0/env/v6 v6.10.1
 	github.com/gin-gonic/gin v1.9.1
 	go.uber.org/automaxprocs v1.5.3
 	go.uber.org/zap v1.25.0

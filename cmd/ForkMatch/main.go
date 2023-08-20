@@ -1,44 +1,51 @@
 package main
 
 import (
+	"net/http"
 	"os"
+	"time"
 
-	"github.com/gin-gonic/gin"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/awslabs/aws-lambda-go-api-proxy/httpadapter"
 	"go.uber.org/zap"
 
 	"ForkMatch/internal/routes"
-
-	_ "go.uber.org/automaxprocs"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
 var (
-	// Version is the version of the compiled software.
+	// Version is the version of the compiled code.
 	Version = "dev"
-	// flagconf is the config flag.
-	//flagconf string
 
 	// id is the hostname of the machine.
 	id, _ = os.Hostname()
 )
 
 func main() {
-	logger := zap.Must(zap.NewProduction())
+	now := time.Now()
 
+	config, err := NewConfig()
+	if err != nil {
+		panic(err)
+	}
+
+	logger := zap.Must(zap.NewProduction())
 	logger.Info(
 		"Starting ForkMatch",
 		zap.String("version", Version),
 		zap.String("id", id),
+		zap.String("environment", string(config.Environment)),
 	)
 
-	r := gin.Default()
 	pingRoute := routes.NewPingHandler(logger)
-	r.GET(pingRoute.Pattern(), func(c *gin.Context) {
-		pingRoute.ServeHTTP(c.Writer, c.Request)
-	})
+	http.Handle(pingRoute.Pattern(), pingRoute)
 
-	err := r.Run() // listen and serve on 0.0.0.0:8080
-	if err != nil {
-		panic(err)
-	}
+	lambda.Start(httpadapter.New(http.DefaultServeMux).ProxyWithContext)
+
+	logger.Info(
+		"Stopped ForkMatch",
+		zap.String("version", Version),
+		zap.String("id", id),
+		zap.Duration("uptime", time.Since(now)),
+	)
 }
