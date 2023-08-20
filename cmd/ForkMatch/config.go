@@ -16,6 +16,8 @@ const (
 type Config struct {
 	// Environment is the environment the service is running in.
 	Environment Environment `env:"ENVIRONMENT" envDefault:"local"`
+	// ServingPort is the port the service is listening on.
+	ServingPort string `env:"SERVING_PORT" envDefault:"8080"`
 }
 
 // NewConfig returns a new configuration object with environment variables loaded.
