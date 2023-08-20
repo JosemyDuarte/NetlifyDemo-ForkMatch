@@ -43,13 +43,13 @@ func NewAWSApp(config *Config) *AWSApp {
 func (app *AWSApp) Run() error {
 	now := time.Now()
 
-	logger := zap.Must(zap.NewProduction())
-	logger.Info(
-		"Starting ForkMatch",
-		zap.String("version", Version),
-		zap.String("id", id),
-		zap.String("environment", string(app.config.Environment)),
-	)
+	logger := zap.Must(zap.NewProduction()).
+		With(
+			zap.String("id", id),
+			zap.String("version", Version),
+			zap.String("environment", string(app.config.Environment)),
+		)
+	logger.Info("Starting ForkMatch")
 
 	pingRoute := routes.NewPingHandler(logger)
 	http.Handle(pingRoute.Pattern(), pingRoute)
@@ -58,9 +58,6 @@ func (app *AWSApp) Run() error {
 
 	logger.Info(
 		"Stopped ForkMatch",
-		zap.String("version", Version),
-		zap.String("id", id),
-		zap.String("environment", string(app.config.Environment)),
 		zap.Duration("uptime", time.Since(now)),
 	)
 
