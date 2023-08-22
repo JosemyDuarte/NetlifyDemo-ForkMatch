@@ -2,6 +2,8 @@ package main
 
 import (
 	"os"
+
+	_ "go.uber.org/automaxprocs"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
