@@ -53,13 +53,9 @@ func (app *AWSApp) Run() error {
 	logger.Info("Starting ForkMatch")
 
 	pingRoute := routes.NewPingHandler(logger)
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		_, err := io.WriteString(w, "Hello, world!")
-		if err != nil {
-			logger.Error("Failed to write response", zap.Error(err))
-		}
-	})
-	http.HandleFunc(pingRoute.Pattern(), pingRoute.ServeHTTP)
+
+	// For lambda, it seems like only root path is supported.
+	http.HandleFunc("/", pingRoute.ServeHTTP)
 
 	lambda.Start(httpadapter.New(http.DefaultServeMux).ProxyWithContext)
 
@@ -93,6 +89,12 @@ func (app *LocalApp) Run() error {
 	logger.Info("Starting ForkMatch")
 
 	pingRoute := routes.NewPingHandler(logger)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		_, err := io.WriteString(w, "Hello, world!")
+		if err != nil {
+			logger.Error("Failed to write response", zap.Error(err))
+		}
+	})
 	http.Handle(pingRoute.Pattern(), pingRoute)
 
 	logger.Info("Listening on port " + app.config.ServingPort)

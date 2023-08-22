@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"fmt"
+	"io"
 	"net/http"
 
 	"go.uber.org/zap"
@@ -16,7 +16,7 @@ func NewPingHandler(log *zap.Logger) *PingHandler {
 }
 
 func (p *PingHandler) ServeHTTP(w http.ResponseWriter, _ *http.Request) {
-	if _, err := fmt.Fprintf(w, "Pong"); err != nil {
+	if _, err := io.WriteString(w, "Pong"); err != nil {
 		p.log.Error("Failed to write response", zap.Error(err))
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
